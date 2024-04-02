@@ -104,6 +104,14 @@ function movePaddle() {
     paddle.x = paddle.x + paddle.dx
 }
 
+    //wall detection
+    if (paddle.x < 0) {
+        paddle.x = 0
+    }
+    if (paddle.x + paddle.w > canvas.width) {
+        paddle.x = canvas.width - paddle.w
+    }
+
 // Keydown event
 function keyDown(e) {
    // console.log(e.key)
