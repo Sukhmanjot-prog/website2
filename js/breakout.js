@@ -116,7 +116,7 @@ function keyDown(e) {
 document.addEventListener('keydown', keyDown)
 // Update vancas drawing and animation
 function update() {
-
+ movePaddle()
 }
 
 
