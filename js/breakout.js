@@ -139,6 +139,7 @@ document.addEventListener('keyup', KeyUp)
 
 function moveBall() {
     ball.x = ball.x + ball.dx
+    ball.y = ball.y + ball.dy
 }
 
 // Update vancas drawing and animation
