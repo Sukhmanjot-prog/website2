@@ -101,8 +101,16 @@ function draw() {
 
 // Move paddle on canvas
 function movePaddle() {
-    
+    paddle.x = paddle.x + paddle.dx
 }
+
+// Keydown event
+function keyDown(e) {
+    console.log(e.key)
+}
+
+// Keyboard event handlers
+document.addEventListener('keydown', keyDown)
 // Update vancas drawing and animation
 function update() {
 
