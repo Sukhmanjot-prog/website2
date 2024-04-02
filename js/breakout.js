@@ -99,9 +99,16 @@ function draw() {
     drawBricks()
 }
 
-draw()
+// Move paddle on canvas
+function movePaddle() {
+    
+}
+// Update vancas drawing and animation
+function update() {
 
- 
+}
+
+
 rulesBtn.addEventListener('click', () => {
     rules.classList.add('show')
 })
