@@ -137,8 +137,13 @@ function keyUp(e) {
 document.addEventListener('keydown', keyDown)
 document.addEventListener('keyup', KeyUp)
 
+function moveBall() {
+    ball.x = ball.x + ball.dx
+}
+
 // Update vancas drawing and animation
 function update() {
+moveBall()
  movePaddle()
  draw()
  requestAnimationFrame(update)
