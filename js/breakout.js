@@ -101,7 +101,7 @@ function draw() {
 
 draw()
 
-
+ 
 rulesBtn.addEventListener('click', () => {
     rules.classList.add('show')
 })
