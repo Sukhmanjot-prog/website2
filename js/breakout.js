@@ -1,12 +1,12 @@
-rulesBtn = document.getElementById('rules-btn')
 rules = document.getElementById('rules')
+rulesBtn = document.getElementById('rules-btn')
 closeBtn = document.getElementById('close-btn')
 canvas = document.getElementById('canvas')
 ctx = canvas.getContext('2d')
 
 score = 0
 
-brickRowCount= 9
+brickRowCount = 9
 brickColumnCount = 5
 
 // Create ball properties
@@ -19,7 +19,7 @@ ball = {
     dy: -4,
 }
 
-// Create Paddle Properties
+// Create paddle properties
 paddle = {
     x: canvas.width / 2 - 40,
     y: canvas.height - 20,
@@ -39,22 +39,22 @@ brickInfo = {
     visible: true,
 }
 
-//Create bricks
+// Create bricks
 bricks = []
 for (let i = 0; i < brickRowCount; i++) {
     bricks[i] = []
-    for (let j = 0; j < brickColumnCount; j++){
+    for (let j = 0; j < brickColumnCount; j++) {
         const x = i * (brickInfo.w + brickInfo.padding) + brickInfo.offsetX
         const y = j * (brickInfo.h + brickInfo.padding) + brickInfo.offsetY
-        bricks[i][j] =  {x,y, ...brickInfo}
+        bricks[i][j] = {x, y, ...brickInfo}
     }
 }
 
 // Draw ball on canvas
 function drawBall() {
     ctx.beginPath()
-    ctx.arc(ball.x, ball.y, 50, 0, Math.PI * 2),
-    ctx.fillStyle = '#0095599'
+    ctx.arc(ball.x, ball.y, ball.size, 0, Math.PI * 2)
+    ctx.fillStyle =  '#0095dd'
     ctx.fill()
     ctx.closePath()
 }
@@ -63,7 +63,7 @@ function drawBall() {
 function drawPaddle() {
     ctx.beginPath()
     ctx.rect(paddle.x, paddle.y, paddle.w, paddle.h)
-    ctx.fillStyle = '#0095599'
+    ctx.fillStyle =  '#0095dd'
     ctx.fill()
     ctx.closePath()
 }
@@ -71,19 +71,19 @@ function drawPaddle() {
 
 // Draw score on canvas
 function drawScore() {
-    ctx.font ='20px Arial'
-    ctx.fillText(`Score: ${score}`, canvas.width-100, )
+    ctx.font = '20px Arial'
+    ctx.fillText(`Score: ${score}`, canvas.width-100, 30)
 }
 
 
-// Draw bricks on canvas
+//Draw bricks on canvas
 function drawBricks() {
     bricks.forEach(column => {
         column.forEach(brick => {
             ctx.beginPath()
             ctx.rect(brick.x, brick.y, brick.w, brick.h)
             ctx.fillStyle = brick.visible ? '#0095dd' : 'transparent';
-            ctx.fill
+            ctx.fill()
             ctx.closePath()
         })
     })
@@ -91,7 +91,7 @@ function drawBricks() {
 
 
 
-// Draw everything
+//Draw everything
 function draw() {
     drawPaddle()
     drawBall()
@@ -102,11 +102,10 @@ function draw() {
 draw()
 
 
-
-// Rules open and close event handlers.
 rulesBtn.addEventListener('click', () => {
-    rulesBtn.classList.toggle('show')
+    rules.classList.add('show')
 })
+
 closeBtn.addEventListener('click', () => {
     rules.classList.remove('show')
 })
