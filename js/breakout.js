@@ -144,7 +144,7 @@ function moveBall() {
 
 // Update vancas drawing and animation
 function update() {
-moveBall()
+ moveBall()
  movePaddle()
  draw()
  requestAnimationFrame(update)
