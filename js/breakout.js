@@ -124,31 +124,31 @@ function keyDown(e) {
 }
 
 // Keyup Event
-function keyUp(e) {
-    if (e.key == 'ArrowRight' ||
-        e.key == 'Right' ||
-        e.key == 'ArrowLeft' ||
-        e.key == 'Left') {
-    paddle.dx = 0
-    }
-}
+// function keyUp(e) {
+//     if (e.key == 'ArrowRight' ||
+//         e.key == 'Right' ||
+//         e.key == 'ArrowLeft' ||
+//         e.key == 'Left') {
+//     paddle.dx = 0
+//     }
+// }
 
 // Keyboard event handlers
-document.addEventListener('keydown', keyDown)
-document.addEventListener('keyup', keyUp)
+// document.addEventListener('keydown', keyDown)
+// document.addEventListener('keyup', keyUp)
 
-function moveBall() {
-    ball.x = ball.x + ball.dx
-    ball.y = ball.y + ball.dy
-}
+// function moveBall() {
+//     ball.x = ball.x + ball.dx
+//     ball.y = ball.y + ball.dy
+// }
 
 // Update vancas drawing and animation
-function update() {
- moveBall()
- movePaddle()
- draw()
- requestAnimationFrame(update)
-}
+// function update() {
+//  moveBall()
+//  movePaddle()
+//  draw()
+//  requestAnimationFrame(update)
+// }
 
 
 rulesBtn.addEventListener('click', () => {
