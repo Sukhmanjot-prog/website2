@@ -147,8 +147,8 @@ function keyDown(e) {
 //  moveBall()
 //  movePaddle()
 //  draw()
-//  requestAnimationFrame(update)
-// }
+ requestAnimationFrame(update)
+}
 
 
 rulesBtn.addEventListener('click', () => {
