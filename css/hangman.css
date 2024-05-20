@@ -23,7 +23,7 @@ h1 {
     padding: 20px 30px;
     position: relative;
     margin: auto;
-    height: 350px;
+    height: 300px;
     width: 450px;
 }
 
@@ -32,9 +32,10 @@ h1 {
     stroke: #ffffff;
     stroke-width: 4px;
     stroke-linecap: round;
+
 }
 
-.figure-part {
+.figure-part{
     display: none;
 }
 
@@ -74,7 +75,6 @@ h1 {
     border-bottom: 3px solid #2980b9;
 }
 
-
 .popup-container {
     background-color: rgba(0,0,0,0.3);
     position: fixed;
@@ -89,9 +89,9 @@ h1 {
 }
 
 .popup {
-    background-color: #2980b9;
+    background: #2980b9;
     border-radius: 5px;
-    box-shadow: 0 15px 10px 3px rgba(0,0,0, 0.1);
+    box-shadow: 0 15px 10px 3px rgba(0,0,0,0.1);
     padding: 20px;
     text-align: center;
 }
@@ -105,10 +105,9 @@ h1 {
     font-size: 16px;
 }
 
-.popup button:active {
+.popup button:active{
     transform: scale(0.98);
 }
-
 
 .notification-container {
     background-color: rgba(0,0,0,0.3);
@@ -119,14 +118,10 @@ h1 {
     transition: transform 0.3s ease-in-out;
 }
 
-
 .notification-container p {
     margin: 0;
 }
 
 .notification-container.show {
-    transform: translateY (-50px);
-    
+    transform: translateY(-50px);
 }
-
-

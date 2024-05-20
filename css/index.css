@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+* {
+    box-sizing: border;
+
+}
+
+body {
+    background-color: NavajoWhite;
+    height: 100vh;
+    margin: 0;
+}
+
+h1 {
+    text-align: center;
+    font-family: "VT323", monospace;
+}
+
+.btn {
+    position: absolute;
+}
+
+.container {
+    height: 730px;
+    position: relative;
+    border: 3px solid black;
+  }
+
+  .vertical-center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-100%);
+    transform: translateY(-50%);
+  }

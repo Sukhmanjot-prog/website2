@@ -1,263 +1,120 @@
-show = document.getElementById('rules-btn');
-close = document.getElementById('close-btn');
-rules = document.getElementById('rules');
-canvas = document.getElementById('canvas');
-ctx = canvas.getContext('2d');
+const wordEl = document.getElementById('word')
+const wrongLettersEl = document.getElementById('wrong-letters')
+const playAgainBtn = document.getElementById('play-button')
+const popup = document.getElementById('popup-container')
+const notification = document.getElementById('notification-container')
+const finalMessage = document.getElementById('final-message')
+const figureParts = document.querySelectorAll('.figure-part')
 
-score = 0;
-BrickRowCount = 9;
-BrickColumnCount = 5;
+const word = ['application', 'programming', 'interface', 'wizard']
 
-ball = {
-    x: canvas.width / 2,
-    y: canvas.height - 30,
-    size: 10,
-    speed: 4,
-    dx: 4,
-    dy: -4
-};
+let execute = true
+let selectedIndex = Math.floor(word.length * Math.random())
+let selectedWord = word[selectedIndex]
 
-paddle = {
-    x: canvas.width / 2 - 40,
-    y: canvas.height - 20,
-    w: 80,
-    h: 10,
-    speed: 8,
-    dx: 0
-};
+const correctLetters = []
+const wrongLetters = []
 
-BrickInfo = {
-    w: 70,
-    h: 20,
-    padding: 10,
-    offsetX: 45,
-    offsetY: 60,
-    visible: true
-};
+//Show hidden word
+function displayWord() {
+    wordEl.innerHTML = `
+        ${selectedWord
+            .split('')
+            .map(letter => `
+                <span class="letter">
+                    ${correctLetters.includes(letter) ? letter : ''}
+                </span>
+            `).join('')
+        }
+    `
+    const innerWord = wordEl.innerText.replace(/\n/g, '')
 
-bricks = [];
-for (let i = 0; i < BrickRowCount; i++) {
-    bricks[i] = [];
-    for (let j = 0; j < BrickColumnCount; j++) {
-        const x = i * (BrickInfo.w + BrickInfo.padding) + BrickInfo.offsetX;
-        const y = j * (BrickInfo.h + BrickInfo.padding) + BrickInfo.offsetY;
-        bricks[i][j] = {
-            x,
-            y,
-            ...BrickInfo
-        };
+    if (innerWord == selectedWord) {
+        finalMessage.innerText = 'Congratulations! You Won!'
+        popup.style.display = 'flex'
+        execute = false
     }
 }
 
-function drawPaddle() {
-    ctx.beginPath();
-    ctx.rect(paddle.x, paddle.y, paddle.w, paddle.h);
-    ctx.fillStyle = '#0095DD';
-    ctx.fill();
-    ctx.closePath();
+//Update the wrong letters
+function updateWrongLettersEl() {
+    //Display wrong letters
+    wrongLettersEl.innerHTML = `
+        ${wrongLetters.length > 0 ? '<p>Wrong</p>' : ''}
+        ${wrongLetters.map(letter => `<span>${letter}</span>`)}
+    `
+    //Display parts
+    figureParts.forEach((part, index) => {
+        const errors = wrongLetters.length
+
+        if (index < errors) {
+            part.style.display = 'block'
+        } else {
+            part.style.display = 'none'
+        }
+    })
+
+    //Check if lost
+    if (wrongLetters.length == figureParts.length) {
+        finalMessage.innerHTML = `<p>Unfortunately, you lost! The word was ${selectedWord}.</p>`
+        popup.style.display = 'flex'
+        execute = false
+    }
 }
 
-function drawBall() {
-    ctx.beginPath();
-    ctx.arc(ball.x, ball.y, ball.size, 0, Math.PI * 2, true);
-    ctx.fillStyle = '#0095DD';
-    ctx.fill();
-    ctx.closePath();
+//Show notification
+function showNotification() {
+    notification.classList.add('show')
+
+    setTimeout(() => {
+        notification.classList.remove('show')
+    }, 2000)
 }
 
-function drawScore() {
-    ctx.font = '20px Arial';
-    ctx.fillText(`Score: ${score}`, canvas.width - 100, 30);
-}
 
-function drawBricks() {
-    bricks.forEach(column => {
-        column.forEach(brick => {
-            if (brick.visible) {
-                ctx.beginPath();
-                ctx.rect(brick.x, brick.y, brick.w, brick.h);
-                ctx.fillStyle = brick.visible ? '#0095dd' : 'transparent';
-                ctx.fill();
-                ctx.closePath();
+// Keydown letter press
+window.addEventListener('keydown', e => {
+
+    if (execute == true) {
+    if (e.keyCode >= 65 && e.keyCode <= 90) {
+        const letter = e.key
+
+        if (selectedWord.includes(letter)) {
+            if (!correctLetters.includes(letter)) {
+                correctLetters.push(letter)
+
+                displayWord()
+            } else {
+                showNotification()
             }
-        });
-    });
-}
+        } else {
+            if (!wrongLetters.includes(letter)) {
+                wrongLetters.push(letter)
 
-function movePaddle() {
-    paddle.x += paddle.dx;
-
-    if (paddle.x < 0) {
-        paddle.x = 0;
-    }
-
-    if (paddle.x + paddle.w > canvas.width) {
-        paddle.x = canvas.width - paddle.w;
-    }
-}
-
-function moveBall() {
-    ball.x += ball.dx;
-    ball.y += ball.dy;
-
-    if (ball.x + ball.size > canvas.width || ball.x - ball.size < 0) {
-        ball.dx *= -1;
-    }
-
-    if (ball.y - ball.size < 0) {
-        ball.dy *= -1;
-    }
-
-    if (ball.y + ball.size > canvas.height) {
-        if (!gameover) {
-            ball.dy *= -1;
+                updateWrongLettersEl()
+            } else {
+                showNotification()
+            }
         }
     }
-
-    if (
-        ball.x - ball.size > paddle.x &&
-        ball.x + ball.size < paddle.x + paddle.w &&
-        ball.y + ball.size > paddle.y
-    ) {
-        ball.dy = -ball.speed;
     }
+})
 
-    bricks.forEach(column => {
-        column.forEach(brick => {
-            if (brick.visible) {
-                if (
-                    ball.x - ball.size > brick.x &&
-                    ball.x + ball.size < brick.x + brick.w &&
-                    ball.y - ball.size < brick.y + brick.h &&
-                    ball.y + ball.size > brick.y
-                ) {
-                    ball.dy *= -1;
-                    brick.visible = false;
-                    increaseScore();
-                }
-            }
-        });
-    });
-}
+//Restart game and play again
+playAgainBtn.addEventListener('click', () => {
+    correctLetters.length = 0
+    wrongLetters.length = 0
 
-function increaseScore() {
-    score++;
-    if (score == BrickRowCount * BrickColumnCount) {
-        score = 0;
-        showAllBricks();
-    }
-}
+    selectedIndex = Math.floor(word.length * Math.random())
+    selectedWord = word[selectedIndex]
 
-function showAllBricks() {
-    bricks.forEach(column => {
-        column.forEach(brick => {
-            brick.visible = true;
-        });
-    });
-}
+    displayWord()
 
-function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawPaddle();
-    drawBall();
-    drawScore();
-    drawBricks();
-}
+    updateWrongLettersEl()
 
-let gamePaused = true;
-let darkMode = false;
-let gameover = false;
+    popup.style.display = 'none'
+    execute = true
+})
 
-const startButton = document.getElementById('start-btn');
-const restartButton = document.getElementById('restart-btn');
 
-startButton.addEventListener('click', () => {
-    if (gamePaused) {
-        gamePaused = false;
-        startButton.style.display = 'none';
-        requestAnimationFrame(update);
-    }
-});
-
-restartButton.style.display = 'none';
-
-document.body.appendChild(restartButton);
-
-function checkGameOver() {
-    if (ball.y + ball.size > canvas.height) {
-        gameover = true;
-        restartButton.style.display = 'block'; // Display restart button
-        startButton.style.display = 'none'; // Hide start button
-        gamePaused = true; // Pause the game
-        prevScore = score; // Store the score just before the ball hits the bottom
-        drawScore(); // Redraw the score
-    }
-}
-
-// Function to restart the game
-function restartGame() {
-    score = 0;
-    gameover = false;
-    gamePaused = false; // Unpause the game
-    startButton.style.display = 'none'; // Hide start button
-    restartButton.style.display = 'none'; // Hide restart button
-    paddle.x = canvas.width / 2 - 40; // Reset paddle position
-    ball.x = canvas.width / 2; // Reset ball position
-    ball.y = canvas.height - 30;
-    bricks.forEach(column => {
-        column.forEach(brick => {
-            brick.visible = true; // Reset brick visibility
-        });
-    });
-}
-
-// Event listener for restart button
-restartButton.addEventListener('click', () => {
-    restartGame();
-    gamePaused = false; // Unpause the game
-    restartButton.style.display = 'none'; // Hide restart button
-    requestAnimationFrame(update);
-});
-
-function update() {
-    if (!gamePaused && !gameover) {
-        moveBall();
-        movePaddle();
-        draw();
-        checkGameOver();
-        requestAnimationFrame(update);
-    }
-
-    if (gameover && gamePaused) {
-        restartButton.style.display = 'block';
-    }
-}
-
-update();
-
-function keyDown(e) {
-    if (e.key == 'ArrowRight' || e.key == 'Right' || e.key == 'd') {
-        paddle.dx = paddle.speed;
-    }
-
-    if (e.key == 'ArrowLeft' || e.key == 'Left' || e.key == 'a') {
-        paddle.dx = -paddle.speed;
-    }
-}
-
-function keyUp(e) {
-    if (e.key == 'ArrowRight' || e.key == 'Right' || e.key == 'd' || e.key == 'ArrowLeft' || e.key == 'Left' || e.key == 'a') {
-        paddle.dx = 0;
-    }
-}
-
-document.addEventListener('keydown', keyDown);
-document.addEventListener('keyup', keyUp);
-
-show.addEventListener('click', () => {
-    rules.classList.toggle('show');
-});
-
-close.addEventListener('click', () => {
-    rules.classList.toggle('show');
-});
+displayWord()

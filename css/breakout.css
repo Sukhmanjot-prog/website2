@@ -64,8 +64,10 @@ canvas {
     border-radius: 5px;
 }
 
-restart-btn {
-    position: absolute;
+.start-btn {
+    position: relative;
     top: 0;
     left: 0;
 }
+
+
